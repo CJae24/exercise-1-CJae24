@@ -5,123 +5,116 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Movies!</title>
+
     <style>
-        /* Part 3: Your styling goes here */
         body {
             font-family: 'Courier New', Courier, monospace;
-        }
-        img {
-            border-radius: 3cap;
-            max-width: 800px ;
-        }
-        h1{
-            font-weight: 500;
             margin: 20px;
+            background-color: #f5f5f5;
         }
-        article{
+
+        article {
             background-color: rgb(109, 140, 157);
-            border-radius: 12cap;
-            margin: 20px;
-            padding: 5cap;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+            border-radius: 30px;
+            margin: 20px 0;
+            padding: 30px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
         }
-        span{
-            margin: 10;
+
+        img {
+            border-radius: 20px;
+            max-width: 100%;
+            height: auto;
+        }
+
+        h2, h3 {
+            margin-bottom: 10px;
+        }
+
+        figure {
+            margin: 20px 0;
+        }
+
+        figcaption {
+            margin-top: 10px;
+            font-style: italic;
         }
 
         .genre {
-         background-color: lightblue;
-         padding: 5px 10px;
-         border-radius: 10px;
-         border: 1px solid steelblue;
-         display: inline-block;
-         margin-right: 5px;
-} 
-    </style>
-    <script>
-        function reverseString(s) {
-            return s.split("").reverse().join("");
+            background-color: lightblue;
+            padding: 5px 10px;
+            border-radius: 10px;
+            border: 1px solid steelblue;
+            display: inline-block;
+            margin-right: 5px;
+            margin-bottom: 5px;
         }
+    </style>
 
+    <script>
         window.onload = function () {
             const xhr = new XMLHttpRequest()
-          xhr.onload = function () {
-            const bodyElement = document.querySelector("body")
 
-            if (xhr.status == 200) {
-            const movies = JSON.parse(xhr.responseText)
+            xhr.onload = function () {
+                const bodyElement = document.querySelector("body")
 
-             movies.forEach(function(movie) {
+                if (xhr.status == 200) {
+                    const movies = JSON.parse(xhr.responseText)
 
-            const article = document.createElement("article")
+                    movies.forEach(movie => {
+                        const movieElement = document.createElement("article")
 
-            const title = document.createElement("h1")
-            title.textContent = movie.Title
+                        movieElement.innerHTML = `
+                        <header>
+                            <h2>${movie.Title}</h2>
+                        </header>
 
-            const released = document.createElement("p")
-            released.textContent = "Released: " + movie.Released
+                        <figure>
+                            <img src="${movie.Poster}" alt="Poster of ${movie.Title}">
+                            <figcaption>${movie.Title}</figcaption>
+                        </figure>
 
-            const runtime = document.createElement("p")
-            runtime.textContent = "Runtime: " + movie.Runtime + " min"
+                        <section>
+                            <p><strong>Release Date:</strong> ${new Date(movie.Released).toLocaleDateString()}</p>
+                            <p><strong>Runtime:</strong> ${movie.Runtime} min</p>
+                            <p><strong>Metascore:</strong> ${movie.Metascore}</p>
+                            <p><strong>IMDb Rating:</strong> ${movie.imdbRating}</p>
+                        </section>
 
-            const directors = document.createElement("p")
-            directors.textContent = "Directors: " + movie.Directors
+                        <section>
+                            <h3>Genres</h3>
+                            <p>${movie.Genres.map(g => `<span class="genre">${g}</span>`).join("")}</p>
+                        </section>
 
-            const writers = document.createElement("p")
-            writers.textContent = "Writers: " + movie.Writers
+                        <section>
+                            <h3>Plot</h3>
+                            <p>${movie.Plot}</p>
+                        </section>
 
-            const actors = document.createElement("p")
-            actors.textContent = "Actors: " + movie.Actors
+                        <section>
+                            <h3>Directors</h3>
+                            <ul>${movie.Directors.map(d => `<li>${d}</li>`).join("")}</ul>
+                        </section>
 
-            const metascore = document.createElement("p")
-            metascore.textContent = "Metascore: " + movie.Metascore
+                        <section>
+                            <h3>Writers</h3>
+                            <ul>${movie.Writers.map(w => `<li>${w}</li>`).join("")}</ul>
+                        </section>
 
-            const imdbRating = document.createElement("p")
-            imdbRating.textContent = "imdbRating: " + movie.imdbRating
+                        <section>
+                            <h3>Actors</h3>
+                            <ul>${movie.Actors.map(a => `<li>${a}</li>`).join("")}</ul>
+                        </section>
+                        `
 
-            const poster = document.createElement("img")
-            poster.src = movie.Poster
-            poster.alt = movie.Title
+                        bodyElement.appendChild(movieElement)
+                    })
 
-            const plot = document.createElement("p")
-            plot.textContent = movie.Plot
-
-           const genresParagraph = document.createElement("p")
-            genresParagraph.textContent = "Genres: "
-
-            movie.Genres.forEach(function (genre) {
-            const span = document.createElement("span")
-             span.textContent = genre
-             span.className = "genre"
-             genresParagraph.append(span)
-})
-
-            article.append(title)
-            article.append(released)
-            article.append(runtime)
-            article.append(poster)
-            article.append(genresParagraph)
-            article.append(directors)
-            article.append(writers)
-            article.append(actors)
-            article.append(plot)
-            article.append(metascore)
-            article.append(imdbRating)
-            
-            
-            
-            
-
-            bodyElement.append(article)
-        })
-
-    } 
-      else {
+                } else {
                     bodyElement.append("Daten konnten nicht geladen werden, Status " + xhr.status + " - " + xhr.statusText)
                 }
-}
-               
-            
+            }
+
             xhr.open("GET", "/movies")
             xhr.send()
         }
