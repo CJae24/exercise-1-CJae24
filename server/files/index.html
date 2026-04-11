@@ -61,6 +61,24 @@
             const released = document.createElement("p")
             released.textContent = "Released: " + movie.Released
 
+            const runtime = document.createElement("p")
+            runtime.textContent = "Runtime: " + movie.Runtime + " min"
+
+            const directors = document.createElement("p")
+            directors.textContent = "Directors: " + movie.Directors
+
+            const writers = document.createElement("p")
+            writers.textContent = "Writers: " + movie.Writers
+
+            const actors = document.createElement("p")
+            actors.textContent = "Actors: " + movie.Actors
+
+            const metascore = document.createElement("p")
+            metascore.textContent = "Metascore: " + movie.Metascore
+
+            const imdbRating = document.createElement("p")
+            imdbRating.textContent = "imdbRating: " + movie.imdbRating
+
             const poster = document.createElement("img")
             poster.src = movie.Poster
             poster.alt = movie.Title
@@ -79,10 +97,20 @@
 })
 
             article.append(title)
-            article.append(poster)
             article.append(released)
-            article.append(plot)
+            article.append(runtime)
+            article.append(poster)
             article.append(genresParagraph)
+            article.append(directors)
+            article.append(writers)
+            article.append(actors)
+            article.append(plot)
+            article.append(metascore)
+            article.append(imdbRating)
+            
+            
+            
+            
 
             bodyElement.append(article)
         })
